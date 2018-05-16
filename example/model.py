@@ -1,22 +1,19 @@
 "function (and parameter space) definitions for hyperband"
 "binary classification with Keras (multilayer perceptron)"
 
-from os.path import join
-import subprocess, h5py
+from __future__ import print_function
+
 from common_defs import *
 
 # a dict with x_train, y_train, x_test, y_test
 
 from keras.models import Sequential
 from keras.layers.core import Dense, Dropout, Flatten, Activation
-from keras.layers.normalization import BatchNormalization as BatchNorm
 from keras.layers.convolutional import ZeroPadding2D, Conv2D
 from keras.layers import GlobalMaxPooling2D
 from keras.callbacks import EarlyStopping
 from keras.layers.advanced_activations import *
 from keras.optimizers import Adadelta,RMSprop
-
-from sklearn.preprocessing import StandardScaler, RobustScaler, MinMaxScaler, MaxAbsScaler
 
 
 space = {
@@ -33,12 +30,12 @@ def get_params():
 
 def print_params( params ):
 	pprint({ k: v for k, v in params.items() if not k.startswith( 'layer_' )})
-	print
+    print_function()
 
 
 def try_params( n_iterations, params, data=None, datamode='memory'):
 
-	print "iterations:", n_iterations
+	print_function("iterations:", n_iterations)
 	print_params( params )
 
         batchsize = 100
