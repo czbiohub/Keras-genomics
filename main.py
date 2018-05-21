@@ -223,9 +223,9 @@ if __name__ == "__main__":
 
         t_auc = roc_auc_score(y_true_for_evalidx, pred_for_evalidx)
         t_acc = accuracy_score(y_true, pred_bin)
-        print_function('Test AUC for output neuron {}:'.format(args.evalidx),
+        print('Test AUC for output neuron {}:'.format(args.evalidx),
                        t_auc)
-        print_function('Test categorical accuracy:', t_acc)
+        print('Test categorical accuracy:', t_acc)
         np.savetxt(evalout, [t_auc, t_acc])
 
     if args.infile != '':
@@ -233,28 +233,28 @@ if __name__ == "__main__":
         model = load_model(weight_file)
 
         predict_batch_num, _ = hb.probedata(args.infile)
-        print_function('Total number of batch to predict:', predict_batch_num)
+        print('Total number of batch to predict:', predict_batch_num)
 
         outdir = join(dirname(args.infile), '.'.join(['pred', model_arch,
                                                       basename(
                                                           args.infile)])) if args.outdir == '' else args.outdir
         if exists(outdir):
-            print_function('Output directory', outdir,
+            print('Output directory', outdir,
                            'exists! Overwrite? (yes/no)')
             if raw_input().lower() == 'yes':
                 system('rm -r ' + outdir)
             else:
-                print_function('Quit predicting!')
+                print('Quit predicting!')
                 sys.exit(1)
 
         for i in range(predict_batch_num):
-            print_function('predict on batch', i)
+            print('predict on batch', i)
             batch_data = h5py.File(args.infile + str(i + 1), 'r')['data']
 
             time1 = time.time()
             pred = model.predict(batch_data)
             time2 = time.time()
-            print_function(
+            print(
                 'predict took %0.3f ms' % ((time2 - time1) * 1000.0))
 
             t_outdir = join(outdir, 'batch' + str(i + 1))

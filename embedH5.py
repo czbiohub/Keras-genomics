@@ -11,7 +11,7 @@ from os.path import exists, dirname, join, basename
 
 
 def outputHDF5(data, label, filename, labelname, dataname):
-    print_function('data shape: ', data.shape)
+    print('data shape: ', data.shape)
     comp_kwargs = {'compression': 'gzip', 'compression_opts': 1}
     # label = [[x.astype(np.float32)] for x in label]
     with h5py.File(filename, 'w') as f:
@@ -190,6 +190,8 @@ if __name__ == "__main__":
     if not exists(outdir):
         makedirs(outdir)
 
+    print("args:", args)
+
     if args.mapperfile == "":
         args.mapper = {'A': [1, 0, 0, 0], 'C': [0, 1, 0, 0], 'G': [0, 0, 1, 0],
                        'T': [0, 0, 0, 1], 'N': [0, 0, 0, 0]}
@@ -202,7 +204,7 @@ if __name__ == "__main__":
                 vec = [float(item) for item in line[1:]]
                 args.mapper[word] = vec
     if args.infile2 == '':
-        print_function(args.isseq == 'Y')
+        print(args.isseq == 'Y')
         batchnum = convert(args.infile, args.labelfile, args.outfile,
                            args.mapper, len(args.mapper['A']), args.batch,
                            args.labelname, args.dataname, args.isseq == 'Y')
