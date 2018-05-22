@@ -10,6 +10,7 @@ import pwd
 try:
     from itertools import izip as zip
 except ImportError: # will be 3.x series
+    # Python 3's zip is a lazy iterator by default
     pass
 
 from os import makedirs
