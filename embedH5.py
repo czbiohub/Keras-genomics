@@ -67,7 +67,7 @@ def convert(infile, labelfile, outfile, mapper, worddim, batchsize, labelname,
         seqdata = []
         label = []
         batchnum = 0
-        for x, y in izip(seqfile, labelfile):
+        for x, y in zip(seqfile, labelfile):
             if isseq:
                 seqdata.append(list(x.strip().split()[1]))
             else:
@@ -111,7 +111,7 @@ def convert_siamese(infile1, infile2, labelfile, outfile, mapper, worddim,
         seqdata2 = []
         label = []
         batchnum = 0
-        for x1, x2, y in izip(seqfile1, seqfile2, labelfile):
+        for x1, x2, y in zip(seqfile1, seqfile2, labelfile):
             seqdata1.append(list(x1.strip().split()[1]))
             seqdata2.append(list(x2.strip().split()[1]))
             # label.append(float(y.strip()))
