@@ -19,7 +19,7 @@ from os.path import exists, dirname, join, basename
 
 def outputHDF5(data, label, filename, labelname, dataname):
     print('data shape: ', data.shape)
-    comp_kwargs = {'compression': 'gzip', 'compression_opts': 1}
+    comp_kwargs = {'compression': 'gzip', 'compression_opts': True}
     # label = [[x.astype(np.float32)] for x in label]
     with h5py.File(filename, 'w') as f:
         f.create_dataset(dataname, data=data, **comp_kwargs)
