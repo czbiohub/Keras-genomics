@@ -5,7 +5,13 @@ import h5py
 import numpy as np
 import os
 import pwd
-from itertools import izip
+
+# Python 2/3 compatibility
+try:
+    from itertools import izip as zip
+except ImportError: # will be 3.x series
+    pass
+
 from os import makedirs
 from os.path import exists, dirname, join, basename
 
