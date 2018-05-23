@@ -40,7 +40,7 @@ def seq2feature(data, mapper, label, out_filename, worddim, labelname,
 
 def feature2feature(data, mapper, label, out_filename, worddim, labelname,
                     dataname):
-    out = np.asarray(data)[:, None, None, :]
+    out = np.asarray(data)[:, np.nan, np.nan, :]
     outputHDF5(out, label, out_filename, labelname, dataname)
 
 
