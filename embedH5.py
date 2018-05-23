@@ -62,9 +62,9 @@ def seq2feature_siamese(data1, data2, mapper, label, out_filename, worddim,
     outputHDF5(np.asarray(out), label, out_filename, labelname, dataname)
 
 
-def convert(infile, labelfile, outfile, mapper, worddim, batchsize, labelname,
-            dataname, isseq):
-    with open(infile) as seqfile, open(labelfile) as labelfile:
+def convert(in_filename, label_filename, outfile, mapper, worddim,
+            batchsize, labelname, dataname, isseq):
+    with open(in_filename) as seqfile, open(label_filename) as labelfile:
         cnt = 0
         seqdata = []
         label = []
@@ -73,9 +73,9 @@ def convert(infile, labelfile, outfile, mapper, worddim, batchsize, labelname,
             if isseq:
                 seqdata.append(list(x.strip().split()[1]))
             else:
-                seqdata.append(map(float, x.strip().split()))
+                seqdata.append(list(map(float, x.strip().split())))
             # label.append(float(y.strip()))
-            label.append(map(float, y.strip().split()))
+            label.append(list(map(float, y.strip().split())))
             cnt = (cnt + 1) % batchsize
             if cnt == 0:
                 batchnum = batchnum + 1
@@ -117,7 +117,7 @@ def convert_siamese(infile1, infile2, labelfile, outfile, mapper, worddim,
             seqdata1.append(list(x1.strip().split()[1]))
             seqdata2.append(list(x2.strip().split()[1]))
             # label.append(float(y.strip()))
-            label.append(map(float, y.strip().split()))
+            label.append(list(map(float, y.strip().split())))
             cnt = (cnt + 1) % batchsize
             if cnt == 0:
                 batchnum = batchnum + 1
