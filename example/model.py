@@ -1,5 +1,7 @@
-"function (and parameter space) definitions for hyperband"
-"binary classification with Keras (multilayer perceptron)"
+"""
+function (and parameter space) definitions for hyperband
+binary classification with Keras (multilayer perceptron)
+"""
 
 from __future__ import print_function
 
