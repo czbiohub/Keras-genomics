@@ -79,6 +79,13 @@ def convert(in_filename, label_filename, outfile, mapper, worddim,
     n_samples = len(target.index)
     n_batches = int(np.ceil(n_samples / batchsize))
 
+    # Create batch column for selection
+    batch_array = np.concatenate(
+        [np.ones(batchsize, dtype=int) * i for i in range(n_batches)])[
+                  :n_samples]
+    target['batch'] = batch_array
+    seqs['batch'] = batch_array
+
     for batch_num in range(n_batches):
         batch_seqs = seqs.query('batch == @i')
         batch_target = target.query('batch == @i')
