@@ -1,10 +1,11 @@
 from __future__ import print_function
 
 import argparse
-import h5py
-import numpy as np
 import os
 import pwd
+
+import h5py
+import numpy as np
 
 # Python 2/3 compatibility
 try:
