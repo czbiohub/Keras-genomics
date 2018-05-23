@@ -4,8 +4,10 @@ import argparse
 import os
 import pwd
 
+from Bio import SeqIO
 import h5py
 import numpy as np
+import pandas as pd
 
 # Python 2/3 compatibility
 try:
@@ -64,44 +66,35 @@ def seq2feature_siamese(data1, data2, mapper, label, out_filename, worddim,
 
 def convert(in_filename, label_filename, outfile, mapper, worddim,
             batchsize, labelname, dataname, isseq):
-    with open(in_filename) as seqfile, open(label_filename) as labelfile:
-        cnt = 0
-        seqdata = []
-        label = []
-        batchnum = 0
-        for x, y in zip(seqfile, labelfile):
-            if isseq:
-                seqdata.append(list(x.strip().split()[1]))
-            else:
-                seqdata.append(list(map(float, x.strip().split())))
-            # label.append(float(y.strip()))
-            label.append(list(map(float, y.strip().split())))
-            cnt = (cnt + 1) % batchsize
-            if cnt == 0:
-                batchnum = batchnum + 1
-                seqdata = np.asarray(seqdata)
-                label = np.asarray(label)
-                t_outfile = outfile + '.batch' + str(batchnum)
-                if isseq:
-                    seq2feature(seqdata, mapper, label, t_outfile, worddim,
-                                labelname, dataname)
-                else:
-                    feature2feature(seqdata, mapper, label, t_outfile, worddim,
-                                    labelname, dataname)
-                seqdata = []
-                label = []
-        if cnt > 0:
-            batchnum = batchnum + 1
-            seqdata = np.asarray(seqdata)
-            label = np.asarray(label)
-            t_outfile = outfile + '.batch' + str(batchnum)
-            if isseq:
-                seq2feature(seqdata, mapper, label, t_outfile, worddim,
+    seqs = pd.read_table(in_filename, header=None, sep='\s+')
+
+    if len(seqs.columns) == 1:
+        # This is actually a fasta file, so convert to a table
+        # for future use
+        seqs = pd.DataFrame([[record.id, record.seq.tostring()] for record in
+                             SeqIO.parse('example/test.fa', 'fasta')])
+
+    target = pd.read_table(label_filename, header=None, sep='\s+')
+
+    n_samples = len(target.index)
+    n_batches = int(np.ceil(n_samples / batchsize))
+
+    for batch_num in range(n_batches):
+        batch_seqs = seqs.query('batch == @i')
+        batch_target = target.query('batch == @i')
+
+        batch_outfile = outfile + '.batch' + str(batch_num)
+
+        seq_data = batch_seqs[1].map(lambda x: np.asarray(list(x)))
+        target_data = batch_target[[0, 1]].values
+
+        if isseq:
+            seq2feature(seq_data, mapper, target_data, batch_outfile, worddim,
+                        labelname, dataname)
+        else:
+            feature2feature(seq_data, mapper, target_data, batch_outfile, worddim,
                             labelname, dataname)
-            else:
-                feature2feature(seqdata, mapper, label, t_outfile, worddim,
-                                labelname, dataname)
-    return batchnum
+    return batch_num
 
 
 def convert_siamese(infile1, infile2, labelfile, outfile, mapper, worddim,
