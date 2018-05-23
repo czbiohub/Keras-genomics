@@ -142,8 +142,8 @@ class Hyperband:
                     label = np.asarray(dataall.get('label'))
                     data = np.asarray(dataall.get('data'))
                 else:
-                    label = np.vstack((label, dataall.get('label')))
-                    data = np.vstack((data, dataall.get('data')))
+                    label = np.vstack((label, np.asarray(dataall.get('label'))))
+                    data = np.vstack((data, np.asarray(dataall.get('data'))))
         return (label, data)
 
     def BatchGenerator(self, mb_size, fileprefix, shuf=True):
