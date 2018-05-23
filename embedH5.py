@@ -71,7 +71,7 @@ def convert(in_filename, label_filename, outfile, mapper, worddim,
     if len(seqs.columns) == 1:
         # This is actually a fasta file, so convert to a table
         # for future use
-        seqs = pd.DataFrame([[record.id, record.seq.tostring()] for record in
+        seqs = pd.DataFrame([[record.id, str(record.seq)] for record in
                              SeqIO.parse('example/test.fa', 'fasta')])
 
     target = pd.read_table(label_filename, header=None, sep='\s+')
