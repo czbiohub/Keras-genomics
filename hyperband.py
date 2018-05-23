@@ -5,6 +5,7 @@ import subprocess
 from math import log, ceil
 from os.path import join
 from random import random
+import sys
 from time import time, ctime
 
 import numpy as np
@@ -130,7 +131,7 @@ class Hyperband:
 
     def readdata(self, dataprefix):
         allfiles = subprocess.check_output('ls ' + dataprefix + '*',
-                                           shell=True).split('\n')[:-1]
+                                           shell=True).decode(sys.stdout.encoding).split('\n')[:-1]
         cnt = 0
         samplecnt = 0
         for x in allfiles:
