@@ -30,12 +30,12 @@ def get_params():
 
 def print_params( params ):
 	pprint({ k: v for k, v in params.items() if not k.startswith( 'layer_' )})
-    print_function()
+    print()
 
 
 def try_params( n_iterations, params, data=None, datamode='memory'):
 
-	print_function("iterations:", n_iterations)
+	print("iterations:", n_iterations)
 	print_params( params )
 
         batchsize = 100
