@@ -87,8 +87,8 @@ def convert(in_filename, label_filename, outfile, mapper, worddim,
     seqs['batch'] = batch_array
 
     for batch_num in range(n_batches):
-        batch_seqs = seqs.query('batch == @i')
-        batch_target = target.query('batch == @i')
+        batch_seqs = seqs.query('batch == @batch_num')
+        batch_target = target.query('batch == @batch_num')
 
         batch_outfile = outfile + '.batch' + str(batch_num)
 
