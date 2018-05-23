@@ -139,11 +139,11 @@ class Hyperband:
                 cnt += 1
                 dataall = h5py.File(x, 'r')
                 if cnt == 1:
-                    label = np.asarray(dataall['label'])
-                    data = np.asarray(dataall['data'])
+                    label = np.asarray(dataall.get('label'))
+                    data = np.asarray(dataall.get('data'))
                 else:
-                    label = np.vstack((label, dataall['label']))
-                    data = np.vstack((data, dataall['data']))
+                    label = np.vstack((label, dataall.get('label')))
+                    data = np.vstack((data, dataall.get('data')))
         return (label, data)
 
     def BatchGenerator(self, mb_size, fileprefix, shuf=True):
