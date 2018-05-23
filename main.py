@@ -9,7 +9,10 @@ from pprint import pprint
 from tempfile import mkdtemp
 
 import argparse
-import cPickle
+try:
+    import cPickle as pickle
+except ModuleNotFoundError:
+    import pickle
 import h5py
 from keras.callbacks import ModelCheckpoint, EarlyStopping
 from keras.models import model_from_json
@@ -118,7 +121,7 @@ def load_model(weightfile2load=None):
     model = model_from_json(open(architecture_file).read())
     if weightfile2load:
         model.load_weights(weightfile2load)
-    best_optim, best_optim_config, best_lossfunc = cPickle.load(
+    best_optim, best_optim_config, best_lossfunc = pickle.load(
         open(optimizer_file, 'rb'))
     model.compile(loss=best_lossfunc,
                   optimizer=best_optim.from_config(best_optim_config),
@@ -164,7 +167,7 @@ if __name__ == "__main__":
         best_archit, best_optim, best_optim_config, best_lossfunc = \
         best_result['model']
         open(architecture_file, 'w').write(best_archit)
-        cPickle.dump((best_optim, best_optim_config, best_lossfunc),
+        pickle.dump((best_optim, best_optim_config, best_lossfunc),
                      open(optimizer_file, 'wb'))
 
     if args.train:
@@ -261,6 +264,6 @@ if __name__ == "__main__":
             makedirs(t_outdir)
             for label_dim in range(pred.shape[1]):
                 with open(join(t_outdir, str(label_dim) + '.pkl'), 'wb') as f:
-                    cPickle.dump(pred[:, label_dim], f)
+                    pickle.dump(pred[:, label_dim], f)
 
     system('rm -r ' + tmpdir)
