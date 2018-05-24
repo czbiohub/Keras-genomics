@@ -77,16 +77,19 @@ def convert(in_filename, label_filename, outfile, mapper, worddim,
     target = pd.read_table(label_filename, header=None, sep='\s+')
 
     n_samples = len(target.index)
-    n_batches = int(np.ceil(n_samples / batchsize))
+    n_batches = int(np.ceil(float(n_samples) / batchsize))
 
     # Create batch column for selection
     batch_iter = range(1, n_batches+1)
     batch_array = np.concatenate(
         [np.ones(batchsize, dtype=int) * i for i in batch_iter])
 
+    print('batch_array.shape - before slicing', batch_array.shape)
+
     # Only take as many samples as we need
     batch_array = batch_array[:n_samples]
-    print('batch_array.shape', batch_array.shape)
+
+    print('batch_array.shape - after slicing', batch_array.shape)
     print('target.shape', target.shape)
     print('seqs.shape', seqs.shape)
     target['batch'] = batch_array
