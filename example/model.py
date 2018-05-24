@@ -4,6 +4,7 @@ binary classification with Keras (multilayer perceptron)
 """
 
 from __future__ import print_function
+from pprint import pprint
 
 from hyperopt import hp
 from hyperopt.pyll.stochastic import sample
