@@ -1,13 +1,13 @@
 from __future__ import print_function
 
-import h5py
+import glob
 import subprocess
 from math import log, ceil
 from os.path import join
 from random import random
-import sys
 from time import time, ctime
 
+import h5py
 import numpy as np
 
 
@@ -130,8 +130,8 @@ class Hyperband:
         return self.results
 
     def readdata(self, dataprefix):
-        allfiles = subprocess.check_output('ls ' + dataprefix + '*',
-                                           shell=True).decode(sys.stdout.encoding).split('\n')[:-1]
+        globber = dataprefix + '*'
+        allfiles = glob.iglob(globber)
         cnt = 0
         samplecnt = 0
         for x in allfiles:
@@ -147,8 +147,8 @@ class Hyperband:
         return (label, data)
 
     def BatchGenerator(self, mb_size, fileprefix, shuf=True):
-        allfiles = subprocess.check_output('ls ' + fileprefix + '*',
-                                           shell=True).split('\n')[:-1]
+        globber = fileprefix + '*'
+        allfiles = glob.iglob(globber)
         cache = []
         while True:
             idx2use = np.random.permutation(
