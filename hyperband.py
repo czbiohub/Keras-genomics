@@ -135,6 +135,7 @@ class Hyperband:
         cnt = 0
         samplecnt = 0
         for x in allfiles:
+            print("Reading " + x + " ...")
             if x.split(dataprefix)[1].isdigit():
                 cnt += 1
                 dataall = h5py.File(x, 'r')
