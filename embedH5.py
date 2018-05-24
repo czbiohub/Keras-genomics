@@ -72,7 +72,7 @@ def convert(in_filename, label_filename, outfile, mapper, worddim,
         # This is actually a fasta file, so convert to a table
         # for future use
         seqs = pd.DataFrame([[record.id, str(record.seq)] for record in
-                             SeqIO.parse('example/test.fa', 'fasta')])
+                             SeqIO.parse(in_filename, 'fasta')])
 
     target = pd.read_table(label_filename, header=None, sep='\s+')
 
