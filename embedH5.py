@@ -64,15 +64,22 @@ def seq2feature_siamese(data1, data2, mapper, label, out_filename, worddim,
     outputHDF5(np.asarray(out), label, out_filename, labelname, dataname)
 
 
+def _read_fasta(filename):
+    return pd.DataFrame([[record.id, str(record.seq)] for record in
+                             SeqIO.parse(filename, 'fasta')])
+
 def convert(in_filename, label_filename, outfile, mapper, worddim,
             batchsize, labelname, dataname, isseq):
-    seqs = pd.read_table(in_filename, header=None, sep='\s+')
+    try:
+        seqs = pd.read_table(in_filename, header=None, sep='\s+')
+    except pd.errors.ParserError:
+        seqs = _read_fasta(in_filename)
 
     if len(seqs.columns) == 1:
         # This is actually a fasta file, so convert to a table
         # for future use
-        seqs = pd.DataFrame([[record.id, str(record.seq)] for record in
-                             SeqIO.parse(in_filename, 'fasta')])
+        seqs = _read_fasta(in_filename)
+
 
     target = pd.read_table(label_filename, header=None, sep='\s+')
 
