@@ -177,8 +177,7 @@ class Hyperband:
                     cache = [data1[idx:], label[idx:]]
 
     def probedata(self, dataprefix):
-        allfiles = subprocess.check_output('ls ' + dataprefix + '*',
-                                           shell=True).split('\n')[:-1]
+        allfiles = glob.iglob(dataprefix + "*")
         cnt = 0
         samplecnt = 0
         for x in allfiles:
