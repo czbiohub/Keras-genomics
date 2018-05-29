@@ -145,6 +145,8 @@ class Hyperband:
                 else:
                     label = np.vstack((label, np.asarray(dataall.get('label'))))
                     data = np.vstack((data, np.asarray(dataall.get('data'))))
+        if cnt == 0:
+            raise ValueError("No files found starting with " + dataprefix)
         return (label, data)
 
     def BatchGenerator(self, mb_size, fileprefix, shuf=True):
