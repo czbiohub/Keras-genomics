@@ -149,18 +149,19 @@ class Hyperband:
 
     def BatchGenerator(self, mb_size, fileprefix, shuf=True):
         globber = fileprefix + '*'
-        allfiles = glob.iglob(globber)
+        allfiles = glob.glob(globber)
+        n_files = len(allfiles)
         cache = []
         while True:
-            idx2use = np.random.permutation(
-                range(len(allfiles))) if shuf else range(len(allfiles))
+            idx2use = np.random.permutation(np.arange(n_files)) if \
+                shuf else np.arange(n_files)
             for i in idx2use:
                 data1f = h5py.File(fileprefix + str(i + 1), 'r')
                 data1 = data1f['data'][()]
                 label = data1f['label'][()]
                 datalen = len(data1)
                 if shuf:
-                    reorder = np.random.permutation(range(datalen))
+                    reorder = np.random.permutation(np.arange(datalen))
                     data1 = data1[reorder]
                     label = label[reorder]
                 minibatch_size = mb_size or datalen
