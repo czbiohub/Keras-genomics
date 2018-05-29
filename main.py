@@ -217,7 +217,10 @@ if __name__ == "__main__":
                                            join(args.topdir, 'test.h5.batch'),
                                            shuf=args.shuf == 1)
         for _ in range(testbatch_num):
-            X_test, Y_test = test_generator.next()
+            try:
+                X_test, Y_test = test_generator.next()
+            except AttributeError:
+                X_test, Y_test = next(test_generator)
             t_pred = model.predict(X_test)
             pred_for_evalidx += [x[args.evalidx] for x in t_pred]
             pred_bin += [np.argmax(x) for x in t_pred]
